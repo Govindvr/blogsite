@@ -32,9 +32,7 @@ def createPost(request):
     if request.method == "POST":
         title = request.POST['title']
         content = request.POST['content']
-
         query = "INSERT INTO blog_post(title,content,date_posted,author_id) VALUES('{}','{}','{}',{})".format(title,content,timezone.now(),request.user.id)
-        print(query)
         cursor = connection.cursor()
         cursor.execute(query)
         return redirect("/")
