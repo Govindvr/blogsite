@@ -18,12 +18,19 @@ def dictfetchall(cursor):
 
 def home(request):
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM blog_post")
+    cursor.execute("SELECT blog_post.id,title,content,date_posted,author_id,username FROM blog_post,auth_user where author_id=auth_user.id order by date_posted desc")
     r = dictfetchall(cursor)
     context = {
         'posts': r
     }
     return render(request,'blog/home.html',context=context)
+
+def blog(request,id):
+    cursor = connection.cursor()
+    cursor.execute("SELECT blog_post.id,title,content,date_posted,author_id,username FROM blog_post,auth_user where author_id=auth_user.id and blog_post.id={}".format(id))
+    post = dictfetchall(cursor)
+    post = post[0]
+    return render(request,"blog/post.html", context={'post':post})
 
 @login_required(login_url= '/user/login')
 def createPost(request):
