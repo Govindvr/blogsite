@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>create</title>
+</head>
+<body>
+    
+    <form action="{% url 'blog-create' %}" method="POST">
+        {% csrf_token %}
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="content">Content:</label><br>
+        <textarea name="content" cols="40" rows="10" class="textarea form-control" required="" id="icontent"></textarea><br>
+        <button type="submit" >Submit</button>
+    </form>
+
+</body>
+</html>
