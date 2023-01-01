@@ -13,5 +13,37 @@
         <p>{{ post.content }}</p>
         
     </div>
+    {% if user.is_authenticated %}
+                      <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                        <form action="{% url 'add-comment' post.id %}" method="POST" class="form-inline">
+                          {% csrf_token %}
+                          <div class="form-group mx-sm-3 mb-2">
+                            <input type="text" class="form-control mr-3" placeholder="Add comment" name="comment">
+                            <button class="btn btn-primary" type="submit">Comment</button>
+                          </div>
+                          
+                        </form>
+                        
+                      </div>
+    {% endif %}
+    {% for comment in comments %}                         
+        
+            <div class="d-flex flex-start">
+            <div class="flex-grow-1 flex-shrink-1">
+                <div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="h6 mb-1 p-1">
+                    {{ comment.username }} <span class="small">- {{post.date_posted|date:"d F,Y"}}</span>
+                    </p>
+                </div>
+                <p class="small mb-0 p-1">
+                    {{comment.content}}
+                </p>
+                </div>
+                </div>                               
+                </div>
+        
+
+    {% endfor %}
 </body>
 </html>
