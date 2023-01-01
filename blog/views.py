@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
 from django.db import connection
-from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from django.utils import timezone
-
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
@@ -25,12 +25,31 @@ def home(request):
     }
     return render(request,'blog/home.html',context=context)
 
-def blog(request,id):
+def viewBlog(request,id):
     cursor = connection.cursor()
     cursor.execute("SELECT blog_post.id,title,content,date_posted,author_id,username FROM blog_post,auth_user where author_id=auth_user.id and blog_post.id={}".format(id))
     post = dictfetchall(cursor)
     post = post[0]
-    return render(request,"blog/post.html", context={'post':post})
+    
+    cursor = connection.cursor()
+    cursor.execute("SELECT blog_comment.id,content,date_posted,author_id,post_id,username FROM blog_comment,auth_user where author_id=auth_user.id and post_id={} order by date_posted desc".format(id))
+    comments = dictfetchall(cursor)
+    context={
+        'post': post,
+        'comments': comments
+    }
+    print(post)
+    return render(request,"blog/post.html", context=context)
+
+@login_required(login_url= '/user/login')
+def addComment(request,id):
+    if request.method=='POST':
+        data = request.POST['comment']
+        user = request.user.id
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO blog_comment(author_id,post_id,content,date_posted) VALUES({},{},'{}','{}')".format(user,id,data,timezone.now()))
+
+    return HttpResponseRedirect(reverse("blog-details", kwargs={"id":id}))
 
 @login_required(login_url= '/user/login')
 def createPost(request):

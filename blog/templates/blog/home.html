@@ -9,7 +9,7 @@
 <body>
     {% for post in posts %}
     <div>
-        <h1><a href="{% url 'blog-details' post.id %}">{{ post.title }}</a></h1> <h3>{{post.username}}</h3> <p>{{ post.date_posted }}</p>
+        <h1><a href="{% url 'blog-details' post.id %}">{{ post.title }}</a></h1> <h3>{{post.username}}</h3> <p>{{ post.date_posted|date:"d F,Y" }}</p>
         <p>{{ post.content }}</p>
         
     </div>
