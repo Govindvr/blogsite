@@ -1,8 +1,18 @@
 {% extends "blog/index.html" %}
 
 {% load static %}
+    <!-- <form action="{% url 'blog-create' %}" method="POST">
+        {% csrf_token %}
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="content">Content:</label><br>
+        <textarea name="content" cols="40" rows="10" class="textarea form-control" required="" id="icontent"></textarea><br>
+        <button type="submit" >Submit</button>
+    </form> -->
+
+
     
-{% block title %}Home{% endblock title %}
+{% block title %}Profile{% endblock title %}
 {% block style %}<link rel="stylesheet" href="{% static 'blog/home.css' %}">{% endblock style %}
 
 {% block body %}
@@ -50,10 +60,16 @@
                         <div class="card-body">
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-                                    <div class="form-group">
-                                        <label class="sr-only" for="message">post</label>
-                                        <textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea>
-                                    </div>
+                                    <form action="{% url 'blog-create' %}" method="POST">
+                                        {% csrf_token %}
+                                        <label for="title">Title:</label><br>
+                                        <input type="text" id="title" name="title"><br>
+                                        <label for="content">Content:</label><br>
+                                        <textarea name="content" cols="40" rows="10" class="textarea form-control" required="" id="icontent"></textarea><br>
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-primary bttn">Submit</button>
+                                        </div>
+                                    </form>
     
                                 </div>
                                 <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
@@ -64,48 +80,54 @@
                                         </div>
                                     </div>
                                     <div class="py-4"></div>
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-primary bttn">share</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="btn-toolbar text-left">
-                                <div class="btn-group">
-                                    <button type="submit" class="btn btn-primary bttn">share</button>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
                     <!--new ends-->
     
-          <div class="card gedf-card">
-            <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="mr-2">
-                            <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                    {% for post in posts %}       
+                    
+                
+                      <div class="card gedf-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mr-2">
+                                        <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                    </div>
+                                    <div class="ml-2">
+                                        <div class="h5 m-0">@{{post.username}}</div>
+                                        <div class="h7 text-muted">{{post.username}}</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="ml-2">
-                            <div class="h5 m-0">@LeeCross</div>
-                            <div class="h7 text-muted">Miracles Lee Cross</div>
+                        <div class="card-body">
+                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>{{ post.date_posted|date:"d F,Y" }}</div>
+                            <a class="card-link" href="{% url 'blog-details' post.id %}">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                            </a>
+                
+                            <p class="card-text">
+                                {{post.content}}
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+                            <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+                            <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
-                <a class="card-link" href="#">
-                    <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
-                </a>
-    
-                <p class="card-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
-                    sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
-                </p>
-            </div>
-            <div class="card-footer">
-                <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-                <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
-            </div>
-        </div>
+                
+                    
+                    {% endfor %}
     
         </div>
     

@@ -1,10 +1,28 @@
-{% extends 'index.html' %}
+{% extends "blog/index.html" %}
 
-{% block content %}
-    <h1> Create New Account </h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button>Register</button>
-    </form>
-{% endblock %}
+{% load static %}
+    
+{% block title %}Home{% endblock title %}
+{% block style %}<link rel="stylesheet" href="{% static 'blog/login.css' %}">{% endblock style %}
+
+{% block body %}
+  
+  
+
+    <div class="limit">
+        <div class="login-container">
+            <div class="bb-login">
+               <H2 class="texts">Welcome !</H2><h5 class="text1" style="color: white;">Enter your details to register.</h5>
+            <!--INSERT FORM HERE-->
+              <h1> Create New Account </h1>
+              <form method="POST">
+                  {% csrf_token %}
+                  {{form.as_p}}
+                  <button>Register</button>
+              </form>
+            </div>
+        </div>
+    </div>
+    
+
+{% endblock body %}

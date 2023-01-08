@@ -52,15 +52,32 @@ def addComment(request,id):
     return HttpResponseRedirect(reverse("blog-details", kwargs={"id":id}))
 
 @login_required(login_url= '/user/login')
+def userProfile(request):
+    
+    cursor = connection.cursor()
+    cursor.execute("SELECT blog_post.id,title,content,date_posted,author_id,username FROM blog_post,auth_user where author_id=auth_user.id and author_id={}order by date_posted desc".format(request.user.id))
+    posts = dictfetchall(cursor)
+
+    cursor = connection.cursor()
+    cursor.execute("SELECT username,name,email FROM user_userdetails,auth_user where auth_user.id={} and auth_user.id=user_userdetails.user_id ".format(request.user.id))
+    details = dictfetchall(cursor)
+    user_details = details[0]
+
+    context = {
+        'user_details' : user_details,
+        'posts': posts
+    }
+
+    print(user_details)
+
+    return render(request,'blog/profile.html',context=context)
+
+@login_required(login_url= '/user/login')
 def createPost(request):
-    print(timezone.now())
-    print(request.user.id)
     if request.method == "POST":
         title = request.POST['title']
         content = request.POST['content']
         query = "INSERT INTO blog_post(title,content,date_posted,author_id) VALUES('{}','{}','{}',{})".format(title,content,timezone.now(),request.user.id)
         cursor = connection.cursor()
         cursor.execute(query)
-        return redirect("/")
-
-    return render(request,'blog/create.html')
+        return render(request,'blog/profile.html')
