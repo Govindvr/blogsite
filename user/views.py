@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 import user
 from .models import Userdetails
+from django.contrib import messages
+from .forms import UserRegisterForm
+from django.contrib.auth.models import User
 
 
 def indexView(request):
@@ -15,23 +18,22 @@ def dashboardView(request):
 
 def registerView(request):
     if request.method == "POST":
-        form=UserCreationForm(request.POST)
+        form=UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data['username']
-            new_user=Userdetails(usernm=username,name=' ',description=' ',mail=' ',location=' ')
-            new_user.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account Created for {username}')
             return redirect('login_url')
     
     else:
-        form=UserCreationForm()
-        return render(request,'registration/register.html',{'form':form})
+        form=UserRegisterForm()
+    return render(request,'registration/register.html',{'form':form})
 
  
 def profileView(request):
     if request.user.is_authenticated:
         username=request.user.username
-        curruser = Userdetails.objects.get(usernm=username)
+        curruser = Userdetails.objects.get(user=request.user)
         return render(request,'profile.html',{'curruser':curruser})
 
     else:
@@ -44,7 +46,7 @@ def dataView(request):
     mail=request.POST['mail']
     location=request.POST['location']
 
-    new_user=Userdetails(usernm=usernm,name=name,description=description,mail=mail,location=location)
+    new_user=Userdetails(user=user,name=name,description=description,mail=mail,location=location)
     new_user.save()
 
     return render(request,'dashboard.html')

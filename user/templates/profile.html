@@ -11,10 +11,10 @@
 
 <body>
     {% block content %} 
-    <h1>username - {{curruser.name}}</h1>
+    <h1>username - {{user}}</h1>
     <h1>name - {{curruser.name}}</h1>
     <h1>description - {{curruser.description}}</h1>
-    <h1>mail - {{curruser.mail}}</h1>
+    <h1>mail - {{user.email}}</h1>
     <h1>location - {{curruser.location}}</h1>
     {% endblock content %}
     <a href="{% url 'update' %}">Update</a>
