@@ -1,0 +1,100 @@
+{% extends "blog/index.html" %}
+
+{% load static %}
+
+    
+{% block title %}{{user_details.username}}{% endblock title %}
+{% block style %}<link rel="stylesheet" href="{% static 'blog/home.css' %}">{% endblock style %}
+
+{% block body %}
+  <!--starting-->
+      <!-- <div class="boxx"> -->
+        <div class="container-fluid gedf-wrapper">
+            <div class="row">
+             
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mr-2">
+                                <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                            </div>
+                            <div class="h5">@{{user_details.username}}</div>
+                            <div class="h7">Fullname : {{user_details.name}}</div>
+                            <div class="h7">tags/stacks
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="h6">Mail</div>
+                                <div class="h8">{{user_details.email}}</div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+    
+              
+                <div class="col-md-6 gedf-main">
+    
+    
+                    {% for post in posts %}       
+                    
+                
+                      <div class="card gedf-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mr-2">
+                                        <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                    </div>
+                                    <div class="ml-2">
+                                        <div class="h5 m-0">@{{post.username}}</div>
+                                        <div class="h7 text-muted">{{post.username}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>{{ post.date_posted|date:"d F,Y" }}</div>
+                            <a class="card-link" href="{% url 'blog-details' post.id %}">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                            </a>
+                
+                            <p class="card-text">
+                                {{post.content}}
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+                            <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+                            <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+                        </div>
+                    </div>
+                
+                    
+                    {% endfor %}
+    
+        </div>
+    
+        <div class="col-md-3">  
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="h6">Latest Posts</div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="h6">Announcements</div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="h6">Calenders</div>
+                  </li>
+                </ul>
+            </div>   
+        </div>
+    
+        </div>
+        </div>
+    
+        <!-- </div> -->
+
+{% endblock body %}
