@@ -1,13 +1,8 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>detailed</title>
-</head>
-<body>
+{% extends "blog/index.html" %}
+
+{% load static %}
+<!-- 
     <div>
         <h1>{{ post.title }}</h1> <h3>{{post.username}}</h3> <p>{{ post.date_posted }}</p>
         <p>{{ post.content }}</p>
@@ -44,6 +39,142 @@
                 </div>
         
 
-    {% endfor %}
-</body>
-</html>
+    {% endfor %} -->
+
+    
+{% block title %}{{post.title}}{% endblock title %}
+{% block style %}<link rel="stylesheet" href="{% static 'blog/home.css' %}">{% endblock style %}
+
+{% block body %}
+<!--starting-->
+      <!-- <div class="boxx"> -->
+        <div class="container-fluid gedf-wrapper">
+            <div class="row">
+              
+              <div class="col-md-3">
+                
+                <div class="card">
+                    <!-- <div class="card-body">
+                        <div class="h7">Latest Posts</div>
+                        <div class="h7 text-muted">Announcements</div>
+                        <div class="h7">Calenders
+                        </div>
+                    </div> -->
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="h6">Latest Posts</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="h6">Announcements</div>
+                        </li>
+                        <li class="list-group-item">
+                          <div class="h6">Calenders</div>
+                      </li>
+                    </ul>
+                </div>
+                
+            </div>
+    
+              
+        <div class="col-md-6 gedf-main">
+
+          <div class="card gedf-card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="mr-2">
+                            <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                        </div>
+                        <div class="ml-2">
+                            <a class="card-link" href="{% url 'blog-user' post.author_id %}">
+                                <div class="h5 m-0">@{{post.username}}</div>
+                            </a>
+                            <div class="h7 text-muted">{{post.username}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>{{ post.date_posted|date:"d F,Y" }}</div>
+                <a class="card-link" href="{% url 'blog-details' post.id %}">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                </a>
+    
+                <p class="card-text">
+                    {{post.content}}
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+                <a data-toggle="collapse" href="#collapseComment" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+                <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+            </div>
+        <div class="col-md-12 collapse" id="collapseComment">
+
+            {% if user.is_authenticated %}
+            <div class="card-footer"> <!---To insert comment-->
+              <div class="form-group">
+                  <!--comment user profile -->
+                  <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex justify-content-between align-items-center">
+                          <div class="mr-2">
+                              <img class="rounded-circle" width="25" src="https://picsum.photos/50/50" alt="">
+                          </div>
+                          <div class="ml-2">
+                              <div class="h6 m-0">@{{user.username}}</div>
+                              <div class="h7 text-muted">{{user.user_details.name}}</div>
+                          </div>
+                      </div>
+                  </div>
+                  <!--comment user prof end-->
+  
+                  <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                    <form action="{% url 'add-comment' post.id %}" method="POST" class="form-inline">
+                      {% csrf_token %}
+                      <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control mr-3 col-xs-4" placeholder="Add comment" name="comment">
+                      </div>
+                      <button class="btn btn-primary" type="submit">Comment</button>
+                      
+                    </form>
+                    
+                  </div>
+                  <!---END: text area and button-->
+                </div>
+          </div>
+          {% endif %}
+          <!---user comments displayed-->
+          {% for comment in comments %}  
+          <div class="card-footer"> 
+              <div class="form-group">
+  
+                  <!--commented user profpic-->
+                  <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex justify-content-between align-items-center">
+                          <div class="mr-1">
+                              <img class="rounded-circle" width="25" src="https://picsum.photos/50/50" alt="">
+                          </div>
+                          <div class="ml-1">
+                              <div class="h6 m-0">@{{ comment.username }} <span class="small">- {{post.date_posted|date:"d F,Y"}}</span></div>
+                              <!-- <div class="h7 text-muted">Miracles Lee Cross</div> -->
+                              <div class="ml-2"><label for="usercomments">{{comment.content}}</label></div>
+                          </div>  
+                      </div>
+                  </div>
+  
+              </div>
+          </div>
+          {% endfor %}
+        </div>
+          
+        </div>
+
+    
+        </div>
+
+        </div>
+        </div>
+    
+        <!-- </div> -->
+
+{% endblock body %}

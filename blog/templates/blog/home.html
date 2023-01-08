@@ -46,7 +46,9 @@
                             <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
                         </div>
                         <div class="ml-2">
-                            <div class="h5 m-0">@{{post.username}}</div>
+                            <a class="card-link" href="{% url 'blog-user' post.author_id %}">
+                                <div class="h5 m-0">@{{post.username}}</div>
+                            </a>
                             <div class="h7 text-muted">{{post.username}}</div>
                         </div>
                     </div>
