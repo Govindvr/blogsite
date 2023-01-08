@@ -3,7 +3,7 @@
 {% block content %}
     <h1> Create New Account </h1>
     <form method="POST">
-        {%csrf_token%}
+        {% csrf_token %}
         {{form.as_p}}
         <button>Register</button>
     </form>
