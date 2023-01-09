@@ -1,5 +1,5 @@
 {% extends "blog/index.html" %}
-
+{% load crispy_forms_tags %}
 {% load static %}
     
 {% block title %}Home{% endblock title %}
@@ -13,10 +13,13 @@
             <div class="bb-login">
                <H2 class="texts">Welcome !</H2><h5 style="color: white;">Enter your login details</h5>
             <!--INSERT FORM HERE-->
-                <form method="POST">
+                <form method="POST" class="navv">
                   {% csrf_token %}
-                  {{form.as_p}}
-                  <button>Login</button>
+                  {{form|crispy}}
+                  <div class="login-container-form-btn">
+                    <button class="btn btn-light texts">Login</button>
+                  </div>
+                  
               </form>
             </div>
         </div>
@@ -25,3 +28,4 @@
 <!-- </div> -->
 
 {% endblock body %}
+ss
